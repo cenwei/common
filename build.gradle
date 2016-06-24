@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8   // 设置 JDK 版本
+targetCompatibility = 1.8
+
+mainClassName = 'org.bclove.common.utils.text.PinyinUtils'
+repositories {
+    mavenCentral()
+    // and optionally...
+    mavenLocal()
+    //使用Maven本地缓存
+    maven { url "http://repo.spring.io/release" }
+    maven { url "http://maven.nlpcn.org"}
+}
+ 
+
+dependencies {
+	compile fileTree(include:['*.jar'],dir:'lib')
+	 // https://mvnrepository.com/artifact/com.belerweb/pinyin4j
+	compile group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
+	 // https://mvnrepository.com/artifact/junit/junit
+	compile group: 'junit', name: 'junit', version: '4.12'
+ 
+    
+}
+
+ 
+
+task(selectServer, dependsOn: 'classes', type: JavaExec) {
+    main = 'org.bclove.common.utils.text.PinyinUtils'
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput= System.in
+}
+ 
+defaultTasks 'selectServer'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
